@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compleanno — Disposizione Tavoli</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --rosso: #c0392b;
+    --rosso-light: #fdf2f2;
+    --rosso-border: #e8b4b0;
+    --blu: #1a4a8a;
+    --blu-light: #f0f5fd;
+    --blu-border: #a8c4e8;
+    --verde: #1e7a4a;
+    --verde-light: #f0faf4;
+    --verde-border: #a0d4b8;
+    --giallo: #b8830a;
+    --giallo-light: #fffbf0;
+    --giallo-border: #e8d090;
+    --bianco: #4a4a4a;
+    --bianco-light: #f8f8f8;
+    --bianco-border: #d0d0d0;
+  }
+
+  body {
+    background: #1a1a1a;
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding: 40px 20px;
+    background-image:
+      radial-gradient(ellipse at 20% 10%, rgba(192,57,43,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 90%, rgba(26,74,138,0.08) 0%, transparent 50%);
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  header .subtitle {
+    margin-top: 10px;
+    color: #888;
+    font-size: 0.95rem;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  header .total-badge {
+    display: inline-block;
+    margin-top: 16px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #ccc;
+    padding: 6px 20px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .tavolo {
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    animation: fadeUp 0.5s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .tavolo:nth-child(1) { animation-delay: 0.05s; }
+  .tavolo:nth-child(2) { animation-delay: 0.10s; }
+  .tavolo:nth-child(3) { animation-delay: 0.15s; }
+  .tavolo:nth-child(4) { animation-delay: 0.20s; }
+  .tavolo:nth-child(5) { animation-delay: 0.25s; }
+
+  .tavolo.rosso  { background: var(--rosso-light);  border-color: var(--rosso-border); }
+  .tavolo.blu    { background: var(--blu-light);    border-color: var(--blu-border); }
+  .tavolo.verde  { background: var(--verde-light);  border-color: var(--verde-border); }
+  .tavolo.giallo { background: var(--giallo-light); border-color: var(--giallo-border); }
+  .tavolo.bianco { background: var(--bianco-light); border-color: var(--bianco-border); }
+
+  .tavolo-header {
+    padding: 18px 24px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid;
+  }
+
+  .rosso  .tavolo-header { background: var(--rosso);  border-color: var(--rosso-border);  color: #fff; }
+  .blu    .tavolo-header { background: var(--blu);    border-color: var(--blu-border);    color: #fff; }
+  .verde  .tavolo-header { background: var(--verde);  border-color: var(--verde-border);  color: #fff; }
+  .giallo .tavolo-header { background: var(--giallo); border-color: var(--giallo-border); color: #fff; }
+  .bianco .tavolo-header { background: #5a5a5a;       border-color: var(--bianco-border); color: #fff; }
+
+  .dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    flex-shrink: 0;
+  }
+
+  .tavolo-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    flex: 1;
+  }
+
+  .tavolo-count {
+    font-size: 0.8rem;
+    font-weight: 500;
+    background: rgba(255,255,255,0.2);
+    padding: 3px 10px;
+    border-radius: 999px;
+    letter-spacing: 0.06em;
+  }
+
+  .guest-list {
+    padding: 12px 8px;
+    list-style: none;
+  }
+
+  .guest-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 16px;
+    border-radius: 10px;
+    font-size: 0.92rem;
+    font-weight: 400;
+    transition: background 0.15s;
+    cursor: default;
+  }
+
+  .rosso  .guest-list li:hover { background: rgba(192,57,43,0.08); }
+  .blu    .guest-list li:hover { background: rgba(26,74,138,0.08); }
+  .verde  .guest-list li:hover { background: rgba(30,122,74,0.08); }
+  .giallo .guest-list li:hover { background: rgba(184,131,10,0.08); }
+  .bianco .guest-list li:hover { background: rgba(0,0,0,0.05); }
+
+  .rosso  .guest-list li { color: #6b1a13; }
+  .blu    .guest-list li { color: #0f2d56; }
+  .verde  .guest-list li { color: #0e3d24; }
+  .giallo .guest-list li { color: #5c3f00; }
+  .bianco .guest-list li { color: #333; }
+
+  .num {
+    font-size: 0.72rem;
+    font-weight: 500;
+    opacity: 0.4;
+    width: 18px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🎂 Il mio Compleanno</h1>
+  <p class="subtitle">Disposizione tavoli</p>
+  <span class="total-badge">51 ospiti · 5 tavoli</span>
+  <!-- updated -->
+</header>
+
+<div class="grid">
+
+  <!-- ROSSO -->
+  <div class="tavolo rosso">
+    <div class="tavolo-header">
+      <div class="dot"></div>
+      <span class="tavolo-title">Tavolo Rosso</span>
+      <span class="tavolo-count">11 persone</span>
+    </div>
+    <ul class="guest-list">
+      <li><span class="num">1</span> Margherita Formenti</li>
+      <li><span class="num">2</span> Salvatore Orlando</li>
+      <li><span class="num">3</span> Giulia Ruberto</li>
+      <li><span class="num">4</span> Raffaella Mazzei</li>
+      <li><span class="num">5</span> Vittoria Lorena</li>
+      <li><span class="num">6</span> Chiara Ruberto</li>
+      <li><span class="num">7</span> Antonio Orlando</li>
+      <li><span class="num">8</span> Chiara Maione</li>
+      <li><span class="num">9</span> Rossana Gulotta</li>
+      <li><span class="num">10</span> Alessio Vaccaro</li>
+      <li><span class="num">11</span> Giovanni Sesto</li>
+    </ul>
+  </div>
+
+  <!-- BLU -->
+  <div class="tavolo blu">
+    <div class="tavolo-header">
+      <div class="dot"></div>
+      <span class="tavolo-title">Tavolo Blu</span>
+      <span class="tavolo-count">10 persone</span>
+    </div>
+    <ul class="guest-list">
+      <li><span class="num">1</span> Luca Longo</li>
+      <li><span class="num">2</span> Ciccio Miletta</li>
+      <li><span class="num">3</span> Luigi Miletta</li>
+      <li><span class="num">4</span> Davide Mercuri</li>
+      <li><span class="num">5</span> Antony Rumoro</li>
+      <li><span class="num">6</span> Davide Paone</li>
+      <li><span class="num">7</span> Ciccio Strangis</li>
+      <li><span class="num">8</span> Simone Vescio</li>
+      <li><span class="num">9</span> Antonio Scarpino</li>
+      <li><span class="num">10</span> Elio Cortese</li>
+    </ul>
+  </div>
+
+  <!-- VERDE -->
+  <div class="tavolo verde">
+    <div class="tavolo-header">
+      <div class="dot"></div>
+      <span class="tavolo-title">Tavolo Verde</span>
+      <span class="tavolo-count">10 persone</span>
+    </div>
+    <ul class="guest-list">
+      <li><span class="num">1</span> Giuseppe De Marco</li>
+      <li><span class="num">2</span> Manuel D'Assisi</li>
+      <li><span class="num">3</span> Marco Buonocore</li>
+      <li><span class="num">4</span> Laura Tropea</li>
+      <li><span class="num">5</span> Saverio Cefalà</li>
+      <li><span class="num">6</span> Marina Ruberto</li>
+      <li><span class="num">7</span> Antonio Mazza</li>
+      <li><span class="num">8</span> Gianmarco Salerno</li>
+      <li><span class="num">9</span> Peppe Foscolo</li>
+      <li><span class="num">10</span> Chiara Foscolo</li>
+    </ul>
+  </div>
+
+  <!-- GIALLO -->
+  <div class="tavolo giallo">
+    <div class="tavolo-header">
+      <div class="dot"></div>
+      <span class="tavolo-title">Tavolo Giallo</span>
+      <span class="tavolo-count">10 persone</span>
+    </div>
+    <ul class="guest-list">
+      <li><span class="num">1</span> Angelo Cimino</li>
+      <li><span class="num">2</span> Giovanni Armenia</li>
+      <li><span class="num">3</span> Vittorio Rubino</li>
+      <li><span class="num">4</span> Ciabattino</li>
+      <li><span class="num">5</span> Angelo Murone</li>
+      <li><span class="num">6</span> Giuseppe Pangaro</li>
+      <li><span class="num">7</span> Pasqualino Rubino</li>
+      <li><span class="num">8</span> Gaia D'Audino</li>
+      <li><span class="num">9</span> Elena Falvo</li>
+      <li><span class="num">10</span> Alessandra De Luca</li>
+    </ul>
+  </div>
+
+  <!-- BIANCO -->
+  <div class="tavolo bianco">
+    <div class="tavolo-header">
+      <div class="dot"></div>
+      <span class="tavolo-title">Tavolo Bianco</span>
+      <span class="tavolo-count">10 persone</span>
+    </div>
+    <ul class="guest-list">
+      <li><span class="num">1</span> Domenico Chirumbolo</li>
+      <li><span class="num">2</span> Angela Tomaselli</li>
+      <li><span class="num">3</span> Max Raso</li>
+      <li><span class="num">4</span> Natalia Raso</li>
+      <li><span class="num">5</span> Rina Raso</li>
+      <li><span class="num">6</span> Antonio Lorena</li>
+      <li><span class="num">7</span> Ciccio Vescio</li>
+      <li><span class="num">8</span> Mara Rubino</li>
+      <li><span class="num">9</span> Francesco Messina</li>
+      <li><span class="num">10</span> Giulio Cimino</li>
+    </ul>
+  </div>
+
+</div>
+
+</body>
+</html>
